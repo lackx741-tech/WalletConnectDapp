@@ -60,6 +60,8 @@ In the dashboard:
 3. Inspect the live selected-contract metadata JSON preview.
 4. Copy or download generated `script.js`.
 
+If you clear every contract selection, the generated script exports an empty contract metadata array on purpose. If the embed popup is opened without a `contracts` query parameter, it falls back to the dashboard's full default artifact list.
+
 The generated script injects a connect button into the host page and opens this dashboard in `?embed=1` mode. Once connected, the popup sends wallet connection status back to the parent page via `postMessage`.
 
 ### Example generated embed usage
