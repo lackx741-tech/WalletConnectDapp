@@ -65,7 +65,10 @@ export function AccountInfo() {
           <div className="detail-row">
             <span className="detail-label">Balance</span>
             <span className="detail-value">
-              {parseFloat(balance.formatted).toFixed(4)} {balance.symbol}
+              {Number(balance.formatted).toLocaleString(undefined, {
+                maximumFractionDigits: 4,
+              })}{' '}
+              {balance.symbol}
             </span>
           </div>
         )}
