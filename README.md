@@ -1,0 +1,2 @@
+# WalletConnectDapp
+Dapp Template
