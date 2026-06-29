@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { WalletPanel } from './WalletPanel'
 import { contractArtifacts } from '../contracts'
@@ -15,6 +15,21 @@ function parseSelectedContracts() {
 export function EmbedView() {
   const { isConnected, address, chainId } = useAccount()
   const selectedContracts = parseSelectedContracts()
+  const parentOrigin = useMemo(() => {
+    try {
+      if (document.referrer) {
+        return new URL(document.referrer).origin
+      }
+
+      if (import.meta.env.VITE_DAPP_URL) {
+        return new URL(import.meta.env.VITE_DAPP_URL).origin
+      }
+    } catch {
+      // fall through to local origin
+    }
+
+    return window.location.origin
+  }, [])
 
   useEffect(() => {
     if (!isConnected || !window.opener) {
@@ -28,9 +43,9 @@ export function EmbedView() {
         address,
         chainId,
       },
-      '*',
+      parentOrigin,
     )
-  }, [address, chainId, isConnected])
+  }, [address, chainId, isConnected, parentOrigin])
 
   return (
     <main className="embedLayout">
