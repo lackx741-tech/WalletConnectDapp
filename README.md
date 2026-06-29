@@ -41,7 +41,7 @@ Required env vars:
 
 Optional env vars:
 
-- `VITE_DAPP_URL` — URL where this dashboard is hosted (used by script generator)
+- `VITE_DAPP_URL` — URL where this dashboard is hosted (used by script generator, and should match your hosted dApp origin)
 
 ## Build and lint
 

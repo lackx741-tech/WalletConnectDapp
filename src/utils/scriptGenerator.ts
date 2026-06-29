@@ -16,9 +16,17 @@ export function buildEmbedScript({
   var DAPP_URL = ${JSON.stringify(normalizedDappUrl)};
   var BUTTON_TEXT = ${JSON.stringify(buttonText)};
   var CONTRACT_IDS = ${JSON.stringify(selectedIds)};
+  var EXPECTED_ORIGIN = (function () {
+    try {
+      return new URL(DAPP_URL).origin;
+    } catch (_err) {
+      return window.location.origin;
+    }
+  })();
+  var btn;
 
   function createButton() {
-    var btn = document.createElement('button');
+    btn = document.createElement('button');
     btn.type = 'button';
     btn.textContent = BUTTON_TEXT;
     btn.style.cssText = 'background:#111827;color:#fff;border:0;border-radius:10px;padding:10px 16px;font:600 14px/1.2 system-ui,sans-serif;cursor:pointer;';
@@ -35,7 +43,7 @@ export function buildEmbedScript({
     var popup = window.open(popupUrl, 'walletconnect_dashboard_embed', 'width=460,height=720,menubar=0,toolbar=0');
 
     function onMessage(event) {
-      if (!DAPP_URL.startsWith(event.origin)) {
+      if (event.origin !== EXPECTED_ORIGIN) {
         return;
       }
 
@@ -51,6 +59,7 @@ export function buildEmbedScript({
 
       if (event.data.type === 'connected') {
         btn.textContent = 'Wallet Connected';
+        window.removeEventListener('message', onMessage, false);
       }
     }
 
@@ -58,11 +67,18 @@ export function buildEmbedScript({
 
     if (popup) {
       popup.focus();
+
+      var closeCheck = window.setInterval(function () {
+        if (popup.closed) {
+          window.removeEventListener('message', onMessage, false);
+          window.clearInterval(closeCheck);
+        }
+      }, 500);
     }
   }
 
   var target = document.currentScript && document.currentScript.parentElement ? document.currentScript.parentElement : document.body;
-  var btn = createButton();
+  btn = createButton();
   target.appendChild(btn);
 })();
 `

@@ -34,14 +34,15 @@ export function ScriptGenerator({ selectedContracts }: ScriptGeneratorProps) {
 
   return (
     <section className="card">
-      <h2>Embeddable script.js generator</h2>
+      <h2>embeddable script.js generator</h2>
       <p>
-        Generate a production-ready starter script that injects a connect button and opens this dashboard in embed mode for WalletConnect sessions.
+        Generate an embeddable script that adds a WalletConnect button and opens this dashboard in embed mode for wallet sessions.
       </p>
+      <p className="small">Set dApp URL to the same origin where this dashboard is hosted so message validation works correctly.</p>
 
       <div className="controls">
         <label>
-          Dapp URL hosting this dashboard
+          dApp URL hosting this dashboard
           <input value={dappUrl} onChange={(event) => setDappUrl(event.target.value)} placeholder="https://your-dapp.example" />
         </label>
         <label>
