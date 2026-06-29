@@ -5,8 +5,10 @@ import { contractArtifacts } from '../contracts'
 
 function parseSelectedContracts() {
   const params = new URLSearchParams(window.location.search)
-  const selected = params.get('contracts')
-  if (!selected) return contractArtifacts
+  if (!params.has('contracts')) return contractArtifacts
+
+  const selected = params.get('contracts') ?? ''
+  if (!selected.trim()) return []
 
   const ids = selected.split(',').map((item) => item.trim())
   return contractArtifacts.filter((contract) => ids.includes(contract.id))

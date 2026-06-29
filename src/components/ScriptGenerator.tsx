@@ -58,6 +58,9 @@ export function ScriptGenerator({ selectedContracts }: ScriptGeneratorProps) {
       <p>
         Selected contracts in script context: {selectedContracts.length > 0 ? selectedContracts.map((contract) => contract.name).join(', ') : 'none'}
       </p>
+      <p className="small">
+        Clearing every selection exports an empty contract context. Leaving the embed query unset uses the dashboard default artifact list.
+      </p>
 
       <div className="jsonPreviewBlock">
         <label htmlFor="selected-contracts-json-preview">Selected contracts preview JSON (embedded metadata)</label>
