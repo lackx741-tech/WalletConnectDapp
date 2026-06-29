@@ -1,5 +1,21 @@
 import type { ContractArtifact } from '../types/contracts'
 
+export type EmbeddedContractMetadata = {
+  id: string
+  name: string
+  address: `0x${string}`
+  purpose: string
+}
+
+export function getEmbeddedContractMetadata(selectedContracts: ContractArtifact[]): EmbeddedContractMetadata[] {
+  return selectedContracts.map((contract) => ({
+    id: contract.id,
+    name: contract.name,
+    address: contract.address,
+    purpose: contract.purpose,
+  }))
+}
+
 export function buildEmbedScript({
   dappUrl,
   buttonText,
@@ -10,12 +26,15 @@ export function buildEmbedScript({
   selectedContracts: ContractArtifact[]
 }): string {
   const normalizedDappUrl = dappUrl.replace(/\/$/, '')
-  const selectedIds = selectedContracts.map((contract) => contract.id)
+  const contractMetadata = getEmbeddedContractMetadata(selectedContracts)
 
   return `(function () {
   var DAPP_URL = ${JSON.stringify(normalizedDappUrl)};
   var BUTTON_TEXT = ${JSON.stringify(buttonText)};
-  var CONTRACT_IDS = ${JSON.stringify(selectedIds)};
+  var CONTRACT_METADATA = ${JSON.stringify(contractMetadata)};
+  var CONTRACT_IDS = CONTRACT_METADATA.map(function (contract) {
+    return contract.id;
+  });
   var EXPECTED_ORIGIN = (function () {
     try {
       return new URL(DAPP_URL).origin;

@@ -8,6 +8,7 @@ React + Vite + wagmi dashboard for WalletConnect, built around the uploaded 0xSe
 - Shows all available root-level JSON contract artifacts in a frontend registry.
 - Separates contracts with JSON artifacts from Solidity-only source files.
 - Lets you select contract modules and generate an embeddable `script.js` connect-button bootstrap.
+- Shows a live “selected contracts preview JSON” block so you can inspect the exact embedded metadata before download.
 - Provides copy/download for the generated `script.js`.
 
 ## Included artifact registry
@@ -56,7 +57,8 @@ In the dashboard:
 
 1. Select contract artifacts to include in embed context.
 2. Set the dashboard URL and button label.
-3. Copy or download generated `script.js`.
+3. Inspect the live selected-contract metadata JSON preview.
+4. Copy or download generated `script.js`.
 
 The generated script injects a connect button into the host page and opens this dashboard in `?embed=1` mode. Once connected, the popup sends wallet connection status back to the parent page via `postMessage`.
 

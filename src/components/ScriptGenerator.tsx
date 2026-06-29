@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { ContractArtifact } from '../types/contracts'
-import { buildEmbedScript } from '../utils/scriptGenerator'
+import { buildEmbedScript, getEmbeddedContractMetadata } from '../utils/scriptGenerator'
 
 type ScriptGeneratorProps = {
   selectedContracts: ContractArtifact[]
@@ -14,6 +14,10 @@ export function ScriptGenerator({ selectedContracts }: ScriptGeneratorProps) {
   const scriptOutput = useMemo(
     () => buildEmbedScript({ dappUrl, buttonText, selectedContracts }),
     [buttonText, dappUrl, selectedContracts],
+  )
+  const selectedContractsPreviewJson = useMemo(
+    () => JSON.stringify(getEmbeddedContractMetadata(selectedContracts), null, 2),
+    [selectedContracts],
   )
 
   async function copyToClipboard() {
@@ -54,6 +58,17 @@ export function ScriptGenerator({ selectedContracts }: ScriptGeneratorProps) {
       <p>
         Selected contracts in script context: {selectedContracts.length > 0 ? selectedContracts.map((contract) => contract.name).join(', ') : 'none'}
       </p>
+
+      <div className="jsonPreviewBlock">
+        <label htmlFor="selected-contracts-json-preview">Selected contracts preview JSON (embedded metadata)</label>
+        <textarea
+          id="selected-contracts-json-preview"
+          value={selectedContractsPreviewJson}
+          readOnly
+          rows={8}
+          onFocus={(event) => event.currentTarget.select()}
+        />
+      </div>
 
       <textarea value={scriptOutput} readOnly rows={16} />
 
